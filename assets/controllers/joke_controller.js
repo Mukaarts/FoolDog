@@ -47,7 +47,7 @@ export default class extends Controller {
             const jokes = await response.json();
 
             if (jokes.length === 0) {
-                this.jokesListTarget.innerHTML = '<p style="color: #7f8c8d; padding: 16px;">Noch keine Witze eingereicht. Sei der Erste!</p>';
+                this.jokesListTarget.innerHTML = '<p style="color: var(--color-text-muted); padding: 16px;">Noch keine Witze eingereicht. Sei der Erste!</p>';
                 return;
             }
 
@@ -58,7 +58,7 @@ export default class extends Controller {
                 </div>
             `).join('');
         } catch {
-            this.jokesListTarget.innerHTML = '<p style="color: #e74c3c; padding: 16px;">Fehler beim Laden der Witze.</p>';
+            this.jokesListTarget.innerHTML = '<p style="color: var(--color-error); padding: 16px;">Fehler beim Laden der Witze.</p>';
         }
     }
 

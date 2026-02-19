@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-theme="dark" class="no-transition">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}FoolDog - Hundewitze{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🐕</text></svg>">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <script>
+            (function() {
+                var theme = localStorage.getItem('fooldog-theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', theme);
+                requestAnimationFrame(function() {
+                    document.documentElement.classList.remove('no-transition');
+                });
+            })();
+        </script>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}

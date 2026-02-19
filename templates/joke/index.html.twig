@@ -3,6 +3,14 @@
 {% block title %}FoolDog - Hundewitze{% endblock %}
 
 {% block body %}
+<button class="theme-toggle"
+    {{ stimulus_controller('theme') }}
+    {{ stimulus_action('theme', 'toggle') }}
+    {{ stimulus_target('theme', 'button') }}
+    title="Thema wechseln"
+    aria-label="Thema wechseln">
+</button>
+
 <div class="app-container" {{ stimulus_controller('joke') }}>
 
     {# --- Animierter Hund --- #}
