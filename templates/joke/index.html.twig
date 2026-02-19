@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FoolDog - Hundewitze{% endblock %}
+
+{% block body %}
+<div class="app-container" {{ stimulus_controller('joke') }}>
+
+    {# --- Animierter Hund --- #}
+    <div class="dog-container">
+        <div class="dog">
+            <div class="dog-body">
+                <div class="dog-tail"></div>
+                <div class="dog-torso"></div>
+                <div class="dog-leg dog-leg-front-left"></div>
+                <div class="dog-leg dog-leg-front-right"></div>
+                <div class="dog-leg dog-leg-back-left"></div>
+                <div class="dog-leg dog-leg-back-right"></div>
+            </div>
+            <div class="dog-head">
+                <div class="dog-ear dog-ear-left"></div>
+                <div class="dog-ear dog-ear-right"></div>
+                <div class="dog-face">
+                    <div class="dog-eye dog-eye-left"></div>
+                    <div class="dog-eye dog-eye-right"></div>
+                    <div class="dog-nose"></div>
+                    <div class="dog-mouth"></div>
+                    <div class="dog-tongue"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# --- Name --- #}
+    <h1 class="app-title">Fool<span class="app-title-dog">Dog</span></h1>
+    <p class="app-subtitle">Dein treuer Begleiter für Hundewitze</p>
+
+    {# --- Witz-Anzeige --- #}
+    <div class="joke-card">
+        <div class="joke-icon">🦴</div>
+        <p class="joke-text" {{ stimulus_target('joke', 'jokeText') }}>{{ joke }}</p>
+        <div class="joke-source" {{ stimulus_target('joke', 'jokeSource') }}></div>
+
+        <div class="joke-actions">
+            <button class="btn btn-primary" {{ stimulus_action('joke', 'loadRandom') }}>
+                🎲 Zufälliger Witz
+            </button>
+            <button class="btn btn-secondary" {{ stimulus_action('joke', 'loadAi') }}>
+                🤖 AI Witz
+            </button>
+        </div>
+    </div>
+
+    {# --- Witz einreichen --- #}
+    <div class="submit-card">
+        <h2>Eigenen Witz einreichen</h2>
+        <div class="form-group">
+            <label for="joke-content">Dein Witz</label>
+            <textarea
+                id="joke-content"
+                class="form-input"
+                placeholder="Warum können Hunde nicht tanzen? Weil sie zwei linke Pfoten haben!"
+                rows="3"
+                {{ stimulus_target('joke', 'jokeInput') }}
+            ></textarea>
+        </div>
+        <div class="form-group">
+            <label for="joke-author">Dein Name (optional)</label>
+            <input
+                type="text"
+                id="joke-author"
+                class="form-input"
+                placeholder="Anonym"
+                {{ stimulus_target('joke', 'authorInput') }}
+            >
+        </div>
+        <button class="btn btn-submit" {{ stimulus_action('joke', 'submit') }}>
+            📤 Witz einreichen
+        </button>
+        <div class="submit-feedback" {{ stimulus_target('joke', 'feedback') }}></div>
+    </div>
+
+    {# --- Eingereichte Witze --- #}
+    <div class="jokes-list-card">
+        <h2>Eingereichte Witze</h2>
+        <button class="btn btn-small" {{ stimulus_action('joke', 'loadList') }}>
+            🔄 Liste laden
+        </button>
+        <div class="jokes-list" {{ stimulus_target('joke', 'jokesList') }}></div>
+    </div>
+
+</div>
+{% endblock %}
