@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FoolDog - Admin Login{% endblock %}
+
+{% block body %}
+<button class="theme-toggle"
+    {{ stimulus_controller('theme') }}
+    {{ stimulus_action('theme', 'toggle') }}
+    {{ stimulus_target('theme', 'button') }}
+    title="Thema wiesselen"
+    aria-label="Thema wiesselen">
+</button>
+
+<div class="app-wrapper">
+
+    {# --- Background Paws --- #}
+    <div class="bg-paw">🐾</div>
+    <div class="bg-paw">🐾</div>
+    <div class="bg-paw">🐾</div>
+    <div class="bg-paw">🐾</div>
+    <div class="bg-paw">🐾</div>
+
+    {# --- Title --- #}
+    <div class="title-section">
+        <div class="title-emoji">🔐</div>
+        <h1 class="app-title">Admin Login</h1>
+        <p class="app-subtitle">FoolDog Verwaltung</p>
+    </div>
+
+    {# --- Login Card --- #}
+    <div class="admin-card">
+        {% if error %}
+            <div class="admin-alert admin-alert--error">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        <form method="post" class="admin-form">
+            <div class="admin-form__group">
+                <label for="inputEmail" class="admin-form__label">E-Mail</label>
+                <input type="email"
+                       id="inputEmail"
+                       name="_username"
+                       value="{{ last_username }}"
+                       class="admin-form__input"
+                       autocomplete="email"
+                       required
+                       autofocus
+                       placeholder="admin@fooldog.lu">
+            </div>
+
+            <div class="admin-form__group">
+                <label for="inputPassword" class="admin-form__label">Passwuert</label>
+                <input type="password"
+                       id="inputPassword"
+                       name="_password"
+                       class="admin-form__input"
+                       autocomplete="current-password"
+                       required
+                       placeholder="********">
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <button type="submit" class="admin-btn admin-btn--primary admin-btn--full">
+                Aloggen
+            </button>
+        </form>
+
+        <div class="admin-form__footer">
+            <a href="{{ path('app_home') }}" class="admin-link">
+                &larr; Zr&eacute;ck op d'Heempage
+            </a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

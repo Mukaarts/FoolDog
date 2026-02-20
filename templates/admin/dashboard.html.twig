@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FoolDog - Admin Dashboard{% endblock %}
+
+{% block body %}
+<button class="theme-toggle"
+    {{ stimulus_controller('theme') }}
+    {{ stimulus_action('theme', 'toggle') }}
+    {{ stimulus_target('theme', 'button') }}
+    title="Thema wiesselen"
+    aria-label="Thema wiesselen">
+</button>
+
+<div class="admin-wrapper" {{ stimulus_controller('admin') }}>
+
+    {# --- Header --- #}
+    <header class="admin-header">
+        <div class="admin-header__left">
+            <span class="admin-header__icon">🐶</span>
+            <h1 class="admin-header__title">FoolDog Admin</h1>
+        </div>
+        <div class="admin-header__right">
+            <a href="{{ path('app_home') }}" class="admin-btn admin-btn--ghost">
+                🏠 Heempage
+            </a>
+            <a href="{{ path('app_logout') }}" class="admin-btn admin-btn--ghost">
+                🚪 Ausloggen
+            </a>
+        </div>
+    </header>
+
+    {# --- Flash Messages --- #}
+    {% for type in ['success', 'error'] %}
+        {% for message in app.flashes(type) %}
+            <div class="admin-alert admin-alert--{{ type }}"
+                 {{ stimulus_target('admin', 'flash') }}>
+                {{ message }}
+                <button class="admin-alert__close"
+                        {{ stimulus_action('admin', 'dismissFlash') }}>&times;</button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {# --- Stats Bar --- #}
+    <div class="admin-stats">
+        <div class="admin-stat">
+            <span class="admin-stat__number">{{ jokes|length }}</span>
+            <span class="admin-stat__label">Witzen</span>
+        </div>
+    </div>
+
+    {# --- Actions --- #}
+    <div class="admin-actions">
+        <a href="{{ path('admin_joke_new') }}" class="admin-btn admin-btn--primary">
+            + Neie Witz
+        </a>
+    </div>
+
+    {# --- Jokes Table --- #}
+    {% if jokes is empty %}
+        <div class="admin-card admin-empty">
+            <p>Keng Witzen fonnt. Erstellt Ären éischte Witz!</p>
+        </div>
+    {% else %}
+        <div class="admin-card">
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th class="admin-table__th--id">ID</th>
+                            <th class="admin-table__th--emoji">Emoji</th>
+                            <th>Inhalt</th>
+                            <th>Auteur</th>
+                            <th class="admin-table__th--date">Datum</th>
+                            <th class="admin-table__th--actions">Aktiounen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for joke in jokes %}
+                            <tr>
+                                <td class="admin-table__cell--id">{{ joke.id }}</td>
+                                <td class="admin-table__cell--emoji">{{ joke.emoji }}</td>
+                                <td class="admin-table__cell--content">{{ joke.content|u.truncate(80, '...') }}</td>
+                                <td>{{ joke.author ?? '—' }}</td>
+                                <td class="admin-table__cell--date">{{ joke.createdAt|date('d.m.Y') }}</td>
+                                <td class="admin-table__cell--actions">
+                                    <a href="{{ path('admin_joke_edit', {id: joke.id}) }}"
+                                       class="admin-btn admin-btn--small admin-btn--ghost">
+                                        ✏️
+                                    </a>
+                                    <form method="post"
+                                          action="{{ path('admin_joke_delete', {id: joke.id}) }}"
+                                          class="admin-inline-form"
+                                          {{ stimulus_action('admin', 'confirmDelete:prevent', 'submit') }}>
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete_joke_' ~ joke.id) }}">
+                                        <button type="submit" class="admin-btn admin-btn--small admin-btn--danger">
+                                            🗑️
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
