@@ -4,7 +4,25 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}FoolDog - Lëtzebuergesche Witzhünn{% endblock %}</title>
+
+        {# PWA — manifest & icons #}
+        <link rel="manifest" href="/manifest.json">
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🐶</text></svg>">
+        <link rel="apple-touch-icon" href="/icons/icon-192.svg">
+
+        {# PWA — theme & appearance #}
+        <meta name="theme-color" content="#1a1a2e" media="(prefers-color-scheme: dark)">
+        <meta name="theme-color" content="#e8e0f0" media="(prefers-color-scheme: light)">
+        <meta name="application-name" content="FoolDog">
+        <meta name="description" content="Lëtzebuergesch Witze mat Ärem léifsten Witzhünn">
+
+        {# PWA — iOS Safari #}
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="apple-mobile-web-app-title" content="FoolDog">
+
+        {# PWA — Microsoft tiles #}
+        <meta name="msapplication-TileColor" content="#1a1a2e">
         <script>
             (function() {
                 var theme = localStorage.getItem('fooldog-theme') || 'dark';
