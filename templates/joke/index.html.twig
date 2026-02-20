@@ -11,7 +11,22 @@
     aria-label="Thema wiesselen">
 </button>
 
-<div class="app-wrapper" {{ stimulus_controller('joke') }}>
+<div class="app-wrapper" {{ stimulus_controller('joke') }} {{ stimulus_controller('pwa') }}>
+
+    {# --- Offline Banner --- #}
+    <div class="offline-banner" {{ stimulus_target('pwa', 'offlineBanner') }} hidden>
+        🐾 Dir sidd offline — Witzen aus dem Cache
+    </div>
+
+    {# --- PWA Install Button --- #}
+    <button class="pwa-install-btn"
+        {{ stimulus_target('pwa', 'installBtn') }}
+        {{ stimulus_action('pwa', 'install') }}
+        hidden
+        title="FoolDog installéieren"
+        aria-label="FoolDog als App installéieren">
+        📲 App installéieren
+    </button>
 
     {# --- Background Paws --- #}
     <div class="bg-paw">🐾</div>

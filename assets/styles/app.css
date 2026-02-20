@@ -383,3 +383,51 @@ html.no-transition *::after {
         font-size: 0.85rem;
     }
 }
+
+/* ===========================
+   PWA — Offline Banner & Install
+   =========================== */
+
+.offline-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 10px 16px;
+    background: rgba(248, 113, 113, 0.15);
+    border-bottom: 1px solid rgba(248, 113, 113, 0.4);
+    color: var(--color-error);
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    backdrop-filter: blur(8px);
+    letter-spacing: 0.02em;
+}
+
+.pwa-install-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    margin: 0 auto 20px;
+    background: var(--color-gold-btn-bg);
+    border: 1px solid var(--color-gold-border-btn);
+    border-radius: 30px;
+    color: var(--color-gold);
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--transition-fast), box-shadow var(--transition-fast);
+    letter-spacing: 0.03em;
+}
+
+.pwa-install-btn:hover {
+    background: var(--color-gold-btn-hover);
+    box-shadow: 0 0 12px var(--color-gold-glow);
+}
+
+.pwa-install-btn[hidden] {
+    display: none;
+}
