@@ -119,13 +119,12 @@ class JokeController extends AbstractController
     #[Route('/api/jokes', name: 'api_jokes_list', methods: ['GET'])]
     public function listJokes(JokeRepository $jokeRepository): JsonResponse
     {
-        $jokes = $jokeRepository->findBy([], ['createdAt' => 'DESC'], 50);
+        $jokes = $jokeRepository->findBy([], ['id' => 'ASC']);
 
         $data = array_map(fn(Joke $j) => [
             'id' => $j->getId(),
+            'emoji' => $j->getEmoji(),
             'content' => $j->getContent(),
-            'author' => $j->getAuthor(),
-            'createdAt' => $j->getCreatedAt()->format('d.m.Y H:i'),
         ], $jokes);
 
         return $this->json($data);

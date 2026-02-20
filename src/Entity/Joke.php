@@ -17,6 +17,9 @@ class Joke
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $emoji = null;
+
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $author = null;
 
@@ -41,6 +44,17 @@ class Joke
     public function setContent(string $content): static
     {
         $this->content = $content;
+        return $this;
+    }
+
+    public function getEmoji(): ?string
+    {
+        return $this->emoji;
+    }
+
+    public function setEmoji(?string $emoji): static
+    {
+        $this->emoji = $emoji;
         return $this;
     }
 
