@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FoolDog - {{ joke ? 'Witz änneren' : 'Neie Witz' }}{% endblock %}
+
+{% block body %}
+<button class="theme-toggle"
+    {{ stimulus_controller('theme') }}
+    {{ stimulus_action('theme', 'toggle') }}
+    {{ stimulus_target('theme', 'button') }}
+    title="Thema wiesselen"
+    aria-label="Thema wiesselen">
+</button>
+
+<div class="admin-wrapper">
+
+    {# --- Header --- #}
+    <header class="admin-header">
+        <div class="admin-header__left">
+            <span class="admin-header__icon">🐶</span>
+            <h1 class="admin-header__title">{{ joke ? 'Witz änneren' : 'Neie Witz' }}</h1>
+        </div>
+        <div class="admin-header__right">
+            <a href="{{ path('admin_dashboard') }}" class="admin-btn admin-btn--ghost">
+                &larr; Zr&eacute;ck
+            </a>
+        </div>
+    </header>
+
+    {# --- Flash Messages --- #}
+    {% for type in ['success', 'error'] %}
+        {% for message in app.flashes(type) %}
+            <div class="admin-alert admin-alert--{{ type }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {# --- Form --- #}
+    <div class="admin-card">
+        <form method="post" class="admin-form">
+            <input type="hidden" name="_token" value="{{ csrf_token('joke_form') }}">
+
+            <div class="admin-form__group">
+                <label for="jokeEmoji" class="admin-form__label">Emoji</label>
+                <input type="text"
+                       id="jokeEmoji"
+                       name="emoji"
+                       value="{{ form_data ? form_data.emoji : (joke ? joke.emoji : '') }}"
+                       class="admin-form__input admin-form__input--short"
+                       maxlength="10"
+                       placeholder="🐾">
+                <span class="admin-form__hint">Optional — een Emoji fir de Witz</span>
+            </div>
+
+            <div class="admin-form__group">
+                <label for="jokeContent" class="admin-form__label">Inhalt *</label>
+                <textarea id="jokeContent"
+                          name="content"
+                          class="admin-form__textarea"
+                          rows="4"
+                          required
+                          maxlength="1000"
+                          placeholder="Schreift hei Äre Witz...">{{ form_data ? form_data.content : (joke ? joke.content : '') }}</textarea>
+            </div>
+
+            <div class="admin-form__group">
+                <label for="jokeAuthor" class="admin-form__label">Auteur</label>
+                <input type="text"
+                       id="jokeAuthor"
+                       name="author"
+                       value="{{ form_data ? form_data.author : (joke ? joke.author : '') }}"
+                       class="admin-form__input"
+                       maxlength="100"
+                       placeholder="Anonym">
+                <span class="admin-form__hint">Optional — Wien huet de Witz geschriwwen?</span>
+            </div>
+
+            <div class="admin-form__actions">
+                <button type="submit" class="admin-btn admin-btn--primary">
+                    {{ joke ? 'Späicheren' : 'Witz uleggen' }}
+                </button>
+                <a href="{{ path('admin_dashboard') }}" class="admin-btn admin-btn--ghost">
+                    Ofbriechen
+                </a>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

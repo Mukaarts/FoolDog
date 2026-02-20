@@ -2,14 +2,29 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Admin;
 use App\Entity\Joke;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    public function __construct(
+        private readonly UserPasswordHasherInterface $passwordHasher,
+    ) {
+    }
+
     public function load(ObjectManager $manager): void
     {
+        // Default admin user
+        $admin = new Admin();
+        $admin->setEmail('admin@fooldog.lu');
+        $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setPassword($this->passwordHasher->hashPassword($admin, 'FoolDog2026!'));
+        $manager->persist($admin);
+
+        // Jokes
         $jokes = [
             ['emoji' => "\u{1F43E}", 'content' => 'Jeder Moien réift de Bauer: "FOOL, komm hier!" — D\'Noperen denken, hien huet e Problem mat sengem Kierper.'],
             ['emoji' => "\u{1F3C6}", 'content' => 'Beim Hondesconcours gewënnt Fool den éischte Präis. Den Owend: "Mäi Fool ass de Bescht!" — D\'Jury schéngt komesch.'],
