@@ -1,92 +1,68 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}FoolDog - Hundewitze{% endblock %}
+{% block title %}FoolDog - Lëtzebuergesche Witzhünn{% endblock %}
 
 {% block body %}
-<div class="app-container" {{ stimulus_controller('joke') }}>
+<button class="theme-toggle"
+    {{ stimulus_controller('theme') }}
+    {{ stimulus_action('theme', 'toggle') }}
+    {{ stimulus_target('theme', 'button') }}
+    title="Thema wiesselen"
+    aria-label="Thema wiesselen">
+</button>
 
-    {# --- Animierter Hund --- #}
-    <div class="dog-container">
-        <div class="dog">
-            <div class="dog-body">
-                <div class="dog-tail"></div>
-                <div class="dog-torso"></div>
-                <div class="dog-leg dog-leg-front-left"></div>
-                <div class="dog-leg dog-leg-front-right"></div>
-                <div class="dog-leg dog-leg-back-left"></div>
-                <div class="dog-leg dog-leg-back-right"></div>
-            </div>
-            <div class="dog-head">
-                <div class="dog-ear dog-ear-left"></div>
-                <div class="dog-ear dog-ear-right"></div>
-                <div class="dog-face">
-                    <div class="dog-eye dog-eye-left"></div>
-                    <div class="dog-eye dog-eye-right"></div>
-                    <div class="dog-nose"></div>
-                    <div class="dog-mouth"></div>
-                    <div class="dog-tongue"></div>
-                </div>
-            </div>
-        </div>
+<div class="app-wrapper" {{ stimulus_controller('joke') }}>
+
+    {# --- Background Paws --- #}
+    <div class="bg-paw">🐾</div>
+    <div class="bg-paw">🐾</div>
+    <div class="bg-paw">🐾</div>
+    <div class="bg-paw">🐾</div>
+    <div class="bg-paw">🐾</div>
+
+    {# --- Title --- #}
+    <div class="title-section">
+        <div class="title-emoji">🐶</div>
+        <h1 class="app-title">Meet Fool</h1>
+        <p class="app-subtitle">De l&euml;tzebuergesche Witzh&uuml;nn</p>
     </div>
 
-    {# --- Name --- #}
-    <h1 class="app-title">Fool<span class="app-title-dog">Dog</span></h1>
-    <p class="app-subtitle">Dein treuer Begleiter für Hundewitze</p>
+    {# --- Joke Card --- #}
+    <div class="joke-card"
+        {{ stimulus_target('joke', 'card') }}
+        {{ stimulus_action('joke', 'reveal') }}>
 
-    {# --- Witz-Anzeige --- #}
-    <div class="joke-card">
-        <div class="joke-icon">🦴</div>
-        <p class="joke-text" {{ stimulus_target('joke', 'jokeText') }}>{{ joke }}</p>
-        <div class="joke-source" {{ stimulus_target('joke', 'jokeSource') }}></div>
+        <div class="joke-emoji" {{ stimulus_target('joke', 'emoji') }}>🐾</div>
 
-        <div class="joke-actions">
-            <button class="btn btn-primary" {{ stimulus_action('joke', 'loadRandom') }}>
-                🎲 Zufälliger Witz
-            </button>
-            <button class="btn btn-secondary" {{ stimulus_action('joke', 'loadAi') }}>
-                🤖 AI Witz
-            </button>
-        </div>
+        <p class="joke-hint" {{ stimulus_target('joke', 'hint') }}>
+            👆 Klick fir de Witz ze gesinn!
+        </p>
+        <p class="joke-text" {{ stimulus_target('joke', 'text') }} style="display: none;"></p>
     </div>
 
-    {# --- Witz einreichen --- #}
-    <div class="submit-card">
-        <h2>Eigenen Witz einreichen</h2>
-        <div class="form-group">
-            <label for="joke-content">Dein Witz</label>
-            <textarea
-                id="joke-content"
-                class="form-input"
-                placeholder="Warum können Hunde nicht tanzen? Weil sie zwei linke Pfoten haben!"
-                rows="3"
-                {{ stimulus_target('joke', 'jokeInput') }}
-            ></textarea>
-        </div>
-        <div class="form-group">
-            <label for="joke-author">Dein Name (optional)</label>
-            <input
-                type="text"
-                id="joke-author"
-                class="form-input"
-                placeholder="Anonym"
-                {{ stimulus_target('joke', 'authorInput') }}
-            >
-        </div>
-        <button class="btn btn-submit" {{ stimulus_action('joke', 'submit') }}>
-            📤 Witz einreichen
+    {# --- Counter --- #}
+    <p class="joke-counter" {{ stimulus_target('joke', 'counter') }}>1 / 10</p>
+
+    {# --- Navigation --- #}
+    <div class="joke-nav">
+        <button class="btn-nav" {{ stimulus_action('joke', 'prev') }}>
+            &larr; Zr&eacute;ck
         </button>
-        <div class="submit-feedback" {{ stimulus_target('joke', 'feedback') }}></div>
+        <button class="btn-nav" {{ stimulus_action('joke', 'next') }}>
+            Weider &rarr;
+        </button>
     </div>
 
-    {# --- Eingereichte Witze --- #}
-    <div class="jokes-list-card">
-        <h2>Eingereichte Witze</h2>
-        <button class="btn btn-small" {{ stimulus_action('joke', 'loadList') }}>
-            🔄 Liste laden
-        </button>
-        <div class="jokes-list" {{ stimulus_target('joke', 'jokesList') }}></div>
-    </div>
+    {# --- GitHub --- #}
+    <a href="https://github.com/Mukaarts/FoolDog"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="github-link">
+        <svg height="20" width="20" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        ⭐ Support op GitHub
+    </a>
 
 </div>
 {% endblock %}
