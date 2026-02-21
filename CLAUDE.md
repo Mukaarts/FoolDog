@@ -289,6 +289,7 @@ Configured in `.env` (base) with overrides in `.env.dev` and `.env.test`:
 
 | Version | Date | Summary |
 |---------|------|---------|
+| v0.5.0 | 2026-02-21 | UserJot feedback button added alongside GitHub link |
 | v0.4.0 | 2026-02-20 | Jokes moved from JS to MySQL; emoji column added |
 | v0.3.0 | 2026-02-20 | Glassmorphism design; Luxembourgish jokes; flip carousel |
 | v0.2.0 | 2026-02-19 | Dark mode toggle with localStorage; layout redesign |
