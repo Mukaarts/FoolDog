@@ -2,6 +2,12 @@
 
 Alle nennenswerten Änderungen an diesem Projekt werden hier dokumentiert.
 
+## [0.5.0] - 2026-02-21
+
+### Hinzugefügt
+- UserJot Feedback-Button neben dem GitHub-Link (öffnet https://fooldog.userjot.com in neuem Tab)
+- Footer-Links-Container für GitHub- und Feedback-Buttons
+
 ## [0.4.0] - 2026-02-20
 
 ### Geändert
