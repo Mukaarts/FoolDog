@@ -1,0 +1,87 @@
+name: Task
+description: Create a task or work item
+title: "[Task]: "
+labels: ["task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for creating a task! Please fill out the form below.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Task Description
+      description: A clear and concise description of what needs to be done
+      placeholder: What needs to be accomplished?
+    validations:
+      required: true
+
+  - type: textarea
+    id: objectives
+    attributes:
+      label: Objectives
+      description: What are the goals or objectives of this task?
+      placeholder: |
+        - Objective 1
+        - Objective 2
+        - Objective 3
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: What conditions must be met for this task to be considered complete?
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+        - [ ] Criterion 3
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: What is the priority of this task?
+      options:
+        - Low
+        - Medium
+        - High
+        - Critical
+      default: 1
+    validations:
+      required: false
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Does this task depend on other tasks or issues?
+      placeholder: |
+        - Depends on #123
+        - Blocks #456
+    validations:
+      required: false
+
+  - type: textarea
+    id: resources
+    attributes:
+      label: Resources
+      description: Links to relevant documentation, designs, or other resources
+      placeholder: |
+        - https://example.com/docs
+        - https://example.com/design
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context about the task here
+      placeholder: Any additional information that might be helpful
+    validations:
+      required: false
