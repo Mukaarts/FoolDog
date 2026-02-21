@@ -285,10 +285,20 @@ html.no-transition *::after {
     transform: translateY(0);
 }
 
+/* --- Footer Links --- */
+
+.footer-links {
+    margin-top: 40px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 /* --- GitHub Button --- */
 
 .github-link {
-    margin-top: 40px;
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -320,6 +330,49 @@ html.no-transition *::after {
 .github-link svg {
     fill: currentColor;
     flex-shrink: 0;
+}
+
+/* --- Feedback Button --- */
+
+.feedback-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--color-github-bg);
+    border: 2px solid var(--color-github-border);
+    border-radius: 50px;
+    color: var(--color-text);
+    padding: 12px 28px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    font-family: inherit;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.feedback-link:hover {
+    background: var(--color-github-hover);
+    transform: translateY(-2px);
+    border-color: var(--color-github-border-hover);
+}
+
+.feedback-link:active {
+    transform: translateY(0);
+}
+
+/* --- Version Label --- */
+
+.version-label {
+    display: block;
+    margin-top: 24px;
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.08em;
+    opacity: 0.5;
+    user-select: none;
 }
 
 /* ===========================
@@ -359,10 +412,15 @@ html.no-transition *::after {
         font-size: 0.9rem;
     }
 
-    .github-link {
+    .footer-links {
+        margin-top: 30px;
+        gap: 12px;
+    }
+
+    .github-link,
+    .feedback-link {
         padding: 10px 22px;
         font-size: 0.85rem;
-        margin-top: 30px;
     }
 
     .theme-toggle {

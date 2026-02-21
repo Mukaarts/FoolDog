@@ -9,6 +9,7 @@ Eine Witz-Karussell-Web-App rund um den Hund **Fool** — gebaut mit Symfony 8, 
 - **Glassmorphism-Design** — Modernes Frosted-Glass-UI mit Farbverläufen und Blur-Effekten
 - **Lëtzebuergesch** — Witze und UI-Texte auf Luxemburgisch
 - **Witz einreichen** — API-Endpunkt zum Einreichen eigener Witze
+- **Feedback** — UserJot-Feedback-Button für Nutzermeldungen
 - **Responsive** — Optimiert für Desktop und Mobile
 
 ## Tech-Stack
