@@ -363,6 +363,18 @@ html.no-transition *::after {
     transform: translateY(0);
 }
 
+/* --- Version Label --- */
+
+.version-label {
+    display: block;
+    margin-top: 24px;
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.08em;
+    opacity: 0.5;
+    user-select: none;
+}
+
 /* ===========================
    Responsive
    =========================== */
