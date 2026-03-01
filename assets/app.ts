@@ -1,5 +1,8 @@
 import './styles/app.css';
 
+// Start Stimulus app (required: UX React uses a Stimulus controller internally)
+import './stimulus_bootstrap';
+
 // Register React components with Symfony UX React
 import { registerReactControllerComponents } from '@symfony/ux-react';
 
