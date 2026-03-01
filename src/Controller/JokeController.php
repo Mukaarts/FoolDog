@@ -29,14 +29,9 @@ class JokeController extends AbstractController
     ];
 
     #[Route('/', name: 'app_home')]
-    public function index(JokeRepository $jokeRepository): Response
+    public function index(): Response
     {
-        $joke = $jokeRepository->findRandom();
-        $jokeText = $joke?->getContent() ?? self::FALLBACK_JOKES[array_rand(self::FALLBACK_JOKES)];
-
-        return $this->render('joke/index.html.twig', [
-            'joke' => $jokeText,
-        ]);
+        return $this->render('joke/index.html.twig');
     }
 
     #[Route('/api/joke/random', name: 'api_joke_random', methods: ['GET'])]

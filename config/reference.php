@@ -1465,6 +1465,10 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     },
  *     default_transport?: scalar|Param|null, // Default: "default"
  * }
+ * @psalm-type ReactConfig = array{
+ *     controllers_path?: scalar|Param|null, // The path to the directory where React controller components are stored - relevant only when using symfony/asset-mapper. // Default: "%kernel.project_dir%/assets/react/controllers"
+ *     name_glob?: list<scalar|Param|null>,
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1479,6 +1483,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     webpack_encore?: WebpackEncoreConfig,
  *     stimulus?: StimulusConfig,
  *     turbo?: TurboConfig,
+ *     react?: ReactConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1496,6 +1501,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         webpack_encore?: WebpackEncoreConfig,
  *         stimulus?: StimulusConfig,
  *         turbo?: TurboConfig,
+ *         react?: ReactConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1511,6 +1517,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         webpack_encore?: WebpackEncoreConfig,
  *         stimulus?: StimulusConfig,
  *         turbo?: TurboConfig,
+ *         react?: ReactConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1527,6 +1534,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         webpack_encore?: WebpackEncoreConfig,
  *         stimulus?: StimulusConfig,
  *         turbo?: TurboConfig,
+ *         react?: ReactConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

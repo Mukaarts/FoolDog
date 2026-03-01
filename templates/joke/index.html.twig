@@ -3,30 +3,11 @@
 {% block title %}FoolDog - Lëtzebuergesche Witzhünn{% endblock %}
 
 {% block body %}
-<button class="theme-toggle"
-    {{ stimulus_controller('theme') }}
-    {{ stimulus_action('theme', 'toggle') }}
-    {{ stimulus_target('theme', 'button') }}
-    title="Thema wiesselen"
-    aria-label="Thema wiesselen">
-</button>
+{{ react_component('ThemeToggle') }}
 
-<div class="app-wrapper" {{ stimulus_controller('joke') }} {{ stimulus_controller('pwa') }}>
+<div class="app-wrapper">
 
-    {# --- Offline Banner --- #}
-    <div class="offline-banner" {{ stimulus_target('pwa', 'offlineBanner') }} hidden>
-        🐾 Dir sidd offline — Witzen aus dem Cache
-    </div>
-
-    {# --- PWA Install Button --- #}
-    <button class="pwa-install-btn"
-        {{ stimulus_target('pwa', 'installBtn') }}
-        {{ stimulus_action('pwa', 'install') }}
-        hidden
-        title="FoolDog installéieren"
-        aria-label="FoolDog als App installéieren">
-        📲 App installéieren
-    </button>
+    {{ react_component('PWAManager') }}
 
     {# --- Background Paws --- #}
     <div class="bg-paw">🐾</div>
@@ -42,31 +23,8 @@
         <p class="app-subtitle">De l&euml;tzebuergesche Hond mam witzen Numm</p>
     </div>
 
-    {# --- Joke Card --- #}
-    <div class="joke-card"
-        {{ stimulus_target('joke', 'card') }}
-        {{ stimulus_action('joke', 'reveal', 'click') }}>
-
-        <div class="joke-emoji" {{ stimulus_target('joke', 'emoji') }}>🐾</div>
-
-        <p class="joke-hint" {{ stimulus_target('joke', 'hint') }}>
-            👆 Klick fir de Witz ze gesinn!
-        </p>
-        <p class="joke-text" {{ stimulus_target('joke', 'text') }} style="display: none;"></p>
-    </div>
-
-    {# --- Counter --- #}
-    <p class="joke-counter" {{ stimulus_target('joke', 'counter') }}>1 / 10</p>
-
-    {# --- Navigation --- #}
-    <div class="joke-nav">
-        <button class="btn-nav" {{ stimulus_action('joke', 'prev') }}>
-            &larr; Zr&eacute;ck
-        </button>
-        <button class="btn-nav" {{ stimulus_action('joke', 'next') }}>
-            Weider &rarr;
-        </button>
-    </div>
+    {# --- Joke Carousel (card + counter + nav) --- #}
+    {{ react_component('JokeCarousel') }}
 
     {# --- Footer Links --- #}
     <div class="footer-links">

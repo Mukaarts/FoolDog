@@ -3,13 +3,7 @@
 {% block title %}FoolDog - Admin Login{% endblock %}
 
 {% block body %}
-<button class="theme-toggle"
-    {{ stimulus_controller('theme') }}
-    {{ stimulus_action('theme', 'toggle') }}
-    {{ stimulus_target('theme', 'button') }}
-    title="Thema wiesselen"
-    aria-label="Thema wiesselen">
-</button>
+{{ react_component('ThemeToggle') }}
 
 <div class="app-wrapper">
 

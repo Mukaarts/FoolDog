@@ -3,15 +3,9 @@
 {% block title %}FoolDog - Admin Dashboard{% endblock %}
 
 {% block body %}
-<button class="theme-toggle"
-    {{ stimulus_controller('theme') }}
-    {{ stimulus_action('theme', 'toggle') }}
-    {{ stimulus_target('theme', 'button') }}
-    title="Thema wiesselen"
-    aria-label="Thema wiesselen">
-</button>
+{{ react_component('ThemeToggle') }}
 
-<div class="admin-wrapper" {{ stimulus_controller('admin') }}>
+<div class="admin-wrapper">
 
     {# --- Header --- #}
     <header class="admin-header">
@@ -30,16 +24,15 @@
     </header>
 
     {# --- Flash Messages --- #}
+    {% set allFlashes = [] %}
     {% for type in ['success', 'error'] %}
         {% for message in app.flashes(type) %}
-            <div class="admin-alert admin-alert--{{ type }}"
-                 {{ stimulus_target('admin', 'flash') }}>
-                {{ message }}
-                <button class="admin-alert__close"
-                        {{ stimulus_action('admin', 'dismissFlash') }}>&times;</button>
-            </div>
+            {% set allFlashes = allFlashes|merge([{type: type, message: message}]) %}
         {% endfor %}
     {% endfor %}
+    {% if allFlashes is not empty %}
+        {{ react_component('AdminFlash', {flashes: allFlashes}) }}
+    {% endif %}
 
     {# --- Stats Bar --- #}
     <div class="admin-stats">
@@ -88,15 +81,10 @@
                                        class="admin-btn admin-btn--small admin-btn--ghost">
                                         ✏️
                                     </a>
-                                    <form method="post"
-                                          action="{{ path('admin_joke_delete', {id: joke.id}) }}"
-                                          class="admin-inline-form"
-                                          {{ stimulus_action('admin', 'confirmDelete:prevent', 'submit') }}>
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete_joke_' ~ joke.id) }}">
-                                        <button type="submit" class="admin-btn admin-btn--small admin-btn--danger">
-                                            🗑️
-                                        </button>
-                                    </form>
+                                    {{ react_component('AdminDeleteConfirm', {
+                                        action: path('admin_joke_delete', {id: joke.id}),
+                                        csrfToken: csrf_token('delete_joke_' ~ joke.id)
+                                    }) }}
                                 </td>
                             </tr>
                         {% endfor %}

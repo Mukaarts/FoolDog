@@ -15,8 +15,9 @@
         "sourceMap": true,
         "declaration": false,
         "noEmit": false,
-        "isolatedModules": true
+        "isolatedModules": true,
+        "jsx": "react-jsx"
     },
-    "include": ["assets/**/*.ts"],
+    "include": ["assets/**/*.ts", "assets/**/*.tsx"],
     "exclude": ["node_modules", "public"]
 }

@@ -14,30 +14,7 @@ interface TurboSubmitEvent extends Event {
     };
 }
 
-// Generate and double-submit a CSRF token in a form field and a cookie, as defined by Symfony's SameOriginCsrfTokenManager
-// Use `form.requestSubmit()` to ensure that the submit event is triggered. Using `form.submit()` will not trigger the event
-// and thus this event-listener will not be executed.
-document.addEventListener('submit', function (event: Event): void {
-    generateCsrfToken(event.target as HTMLFormElement);
-}, true);
-
-// When @hotwired/turbo handles form submissions, send the CSRF token in a header in addition to a cookie
-// The `framework.csrf_protection.check_header` config option needs to be enabled for the header to be checked
-document.addEventListener('turbo:submit-start', function (event: Event): void {
-    const turboEvent = event as TurboSubmitEvent;
-    const h: Record<string, string> = generateCsrfHeaders(turboEvent.detail.formSubmission.formElement);
-    Object.keys(h).map(function (k: string): void {
-        turboEvent.detail.formSubmission.fetchRequest.headers[k] = h[k];
-    });
-});
-
-// When @hotwired/turbo handles form submissions, remove the CSRF cookie once a form has been submitted
-document.addEventListener('turbo:submit-end', function (event: Event): void {
-    const turboEvent = event as TurboSubmitEvent;
-    removeCsrfToken(turboEvent.detail.formSubmission.formElement);
-});
-
-export function generateCsrfToken(formElement: HTMLFormElement): void {
+function generateCsrfToken(formElement: HTMLFormElement): void {
     const csrfField: HTMLInputElement | null = formElement.querySelector('input[data-controller="csrf-protection"], input[name="_csrf_token"]');
 
     if (!csrfField) {
@@ -59,7 +36,7 @@ export function generateCsrfToken(formElement: HTMLFormElement): void {
     }
 }
 
-export function generateCsrfHeaders(formElement: HTMLFormElement): Record<string, string> {
+function generateCsrfHeaders(formElement: HTMLFormElement): Record<string, string> {
     const headers: Record<string, string> = {};
     const csrfField: HTMLInputElement | null = formElement.querySelector('input[data-controller="csrf-protection"], input[name="_csrf_token"]');
 
@@ -76,7 +53,7 @@ export function generateCsrfHeaders(formElement: HTMLFormElement): Record<string
     return headers;
 }
 
-export function removeCsrfToken(formElement: HTMLFormElement): void {
+function removeCsrfToken(formElement: HTMLFormElement): void {
     const csrfField: HTMLInputElement | null = formElement.querySelector('input[data-controller="csrf-protection"], input[name="_csrf_token"]');
 
     if (!csrfField) {
@@ -92,5 +69,19 @@ export function removeCsrfToken(formElement: HTMLFormElement): void {
     }
 }
 
-/* stimulusFetch: 'lazy' */
-export default 'csrf-protection-controller';
+document.addEventListener('submit', function (event: Event): void {
+    generateCsrfToken(event.target as HTMLFormElement);
+}, true);
+
+document.addEventListener('turbo:submit-start', function (event: Event): void {
+    const turboEvent = event as TurboSubmitEvent;
+    const h: Record<string, string> = generateCsrfHeaders(turboEvent.detail.formSubmission.formElement);
+    Object.keys(h).map(function (k: string): void {
+        turboEvent.detail.formSubmission.fetchRequest.headers[k] = h[k];
+    });
+});
+
+document.addEventListener('turbo:submit-end', function (event: Event): void {
+    const turboEvent = event as TurboSubmitEvent;
+    removeCsrfToken(turboEvent.detail.formSubmission.formElement);
+});
