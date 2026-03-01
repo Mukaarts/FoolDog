@@ -17,7 +17,7 @@ This file provides AI assistants with the context needed to work effectively in 
 | Backend | PHP 8.4, Symfony 8.0 |
 | ORM | Doctrine ORM 3.x |
 | Templating | Twig |
-| Frontend JS | Stimulus.js (Hotwire) |
+| Frontend JS | Stimulus.js (Hotwire) + TypeScript |
 | CSS | Custom CSS3 with variables (glassmorphism) |
 | Asset Build | Webpack Encore |
 | Database | MySQL 8.0 (Docker) |
@@ -30,15 +30,22 @@ This file provides AI assistants with the context needed to work effectively in 
 ```
 FoolDog/
 ├── assets/
-│   ├── controllers/           # Stimulus.js controllers
-│   │   ├── joke_controller.js      # Carousel flip logic
-│   │   ├── theme_controller.js     # Dark/light mode toggle
-│   │   ├── csrf_protection_controller.js
-│   │   └── hello_controller.js     # Demo (can be removed)
+│   ├── controllers/           # Stimulus.js controllers (TypeScript)
+│   │   ├── joke_controller.ts      # Carousel flip logic
+│   │   ├── theme_controller.ts     # Dark/light mode toggle
+│   │   ├── admin_controller.ts     # Admin dashboard utilities
+│   │   ├── pwa_controller.ts       # PWA install & offline support
+│   │   └── csrf_protection_controller.ts
+│   ├── types/                 # TypeScript type declarations
+│   │   ├── joke.ts                 # Joke API response interface
+│   │   ├── pwa.d.ts                # BeforeInstallPromptEvent
+│   │   ├── stimulus-bridge.d.ts    # @symfony/stimulus-bridge types
+│   │   ├── webpack.d.ts            # Webpack require.context types
+│   │   └── css.d.ts                # CSS module declarations
 │   ├── styles/
 │   │   └── app.css            # All CSS (glassmorphism, variables, dark mode)
-│   ├── app.js                 # Frontend entry point
-│   └── stimulus_bootstrap.js  # Stimulus controller loader
+│   ├── app.ts                 # Frontend entry point
+│   └── stimulus_bootstrap.ts  # Stimulus controller loader
 ├── config/
 │   ├── packages/              # Symfony package config (doctrine, twig, etc.)
 │   ├── routes/                # Route definitions
@@ -69,6 +76,7 @@ FoolDog/
 ├── Makefile                   # All common dev commands
 ├── composer.json              # PHP dependencies
 ├── package.json               # Node dependencies
+├── tsconfig.json              # TypeScript compiler config
 ├── webpack.config.js          # Webpack Encore config
 └── phpunit.dist.xml           # PHPUnit configuration
 ```
@@ -195,13 +203,15 @@ Migrations are in `migrations/`. Always run `make migration` after changing enti
 - Use `JokeRepository::findRandom()` for random joke queries — it uses an efficient offset-based strategy, not `ORDER BY RAND()`.
 - Data fixtures use `AppFixtures` with `DoctrineFixturesBundle`. Run with `make fixtures`.
 
-### JavaScript / Stimulus
+### TypeScript / Stimulus
 
-- All interactivity is handled by **Stimulus controllers** in `assets/controllers/`.
-- Controllers are auto-registered via `assets/stimulus_bootstrap.js`.
-- Keep controllers small and focused. The `joke_controller.js` handles the flip animation (400ms CSS transition) and carousel navigation.
+- All interactivity is handled by **Stimulus controllers** in `assets/controllers/` written in **TypeScript**.
+- Controllers are auto-registered via `assets/stimulus_bootstrap.ts`.
+- Keep controllers small and focused. The `joke_controller.ts` handles the flip animation (400ms CSS transition) and carousel navigation.
 - Dark mode preference is stored in `localStorage` under the key `fooldog-theme`.
-- Do **not** introduce heavy JS frameworks (React, Vue, etc.). Stimulus + CSS is the chosen approach.
+- Do **not** introduce heavy JS frameworks (React, Vue, etc.). Stimulus + TypeScript + CSS is the chosen approach.
+- Use `declare readonly` for Stimulus target properties (e.g., `declare readonly cardTarget: HTMLElement`).
+- Shared type definitions live in `assets/types/`.
 
 ### CSS
 

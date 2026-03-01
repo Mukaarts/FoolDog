@@ -6,13 +6,23 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
     static targets = ['installBtn', 'offlineBanner'];
 
-    connect() {
+    declare readonly installBtnTarget: HTMLElement;
+    declare readonly hasInstallBtnTarget: boolean;
+    declare readonly offlineBannerTarget: HTMLElement;
+    declare readonly hasOfflineBannerTarget: boolean;
+
+    private _deferredPrompt: BeforeInstallPromptEvent | null = null;
+    private _onBeforeInstallPrompt!: (event: BeforeInstallPromptEvent) => void;
+    private _onOnline!: () => void;
+    private _onOffline!: () => void;
+
+    connect(): void {
         this._deferredPrompt = null;
         this._bindInstallPrompt();
         this._bindNetworkStatus();
     }
 
-    disconnect() {
+    disconnect(): void {
         window.removeEventListener('beforeinstallprompt', this._onBeforeInstallPrompt);
         window.removeEventListener('online', this._onOnline);
         window.removeEventListener('offline', this._onOffline);
@@ -20,8 +30,8 @@ export default class extends Controller {
 
     // ─── Install ────────────────────────────────────────────────────────────
 
-    _bindInstallPrompt() {
-        this._onBeforeInstallPrompt = (event) => {
+    private _bindInstallPrompt(): void {
+        this._onBeforeInstallPrompt = (event: BeforeInstallPromptEvent): void => {
             event.preventDefault();
             this._deferredPrompt = event;
             if (this.hasInstallBtnTarget) {
@@ -31,7 +41,7 @@ export default class extends Controller {
 
         window.addEventListener('beforeinstallprompt', this._onBeforeInstallPrompt);
 
-        window.addEventListener('appinstalled', () => {
+        window.addEventListener('appinstalled', (): void => {
             this._deferredPrompt = null;
             if (this.hasInstallBtnTarget) {
                 this.installBtnTarget.hidden = true;
@@ -39,7 +49,7 @@ export default class extends Controller {
         });
     }
 
-    async install() {
+    async install(): Promise<void> {
         if (!this._deferredPrompt) return;
         this._deferredPrompt.prompt();
         await this._deferredPrompt.userChoice;
@@ -51,9 +61,9 @@ export default class extends Controller {
 
     // ─── Online / Offline ────────────────────────────────────────────────────
 
-    _bindNetworkStatus() {
-        this._onOnline = () => this._setOffline(false);
-        this._onOffline = () => this._setOffline(true);
+    private _bindNetworkStatus(): void {
+        this._onOnline = (): void => this._setOffline(false);
+        this._onOffline = (): void => this._setOffline(true);
 
         window.addEventListener('online', this._onOnline);
         window.addEventListener('offline', this._onOffline);
@@ -64,7 +74,7 @@ export default class extends Controller {
         }
     }
 
-    _setOffline(isOffline) {
+    private _setOffline(isOffline: boolean): void {
         if (this.hasOfflineBannerTarget) {
             this.offlineBannerTarget.hidden = !isOffline;
         }
