@@ -68,6 +68,53 @@
         </button>
     </div>
 
+    {# --- Share Buttons --- #}
+    <div class="share-actions"
+         {{ stimulus_controller('share') }}
+         {{ stimulus_target('share', 'shareCanvas') }}>
+
+        <button class="btn-share btn-share--whatsapp"
+                {{ stimulus_action('share', 'share') }}
+                title="Op WhatsApp deelen">
+            <span class="btn-share__icon">💬</span>
+            <span class="btn-share__text">Deelen</span>
+        </button>
+    </div>
+
+    {# --- Share Preview Modal --- #}
+    <div class="share-modal"
+         {{ stimulus_target('share', 'previewModal') }}
+         {{ stimulus_action('share', 'closePreview', 'click') }}>
+
+        <div class="share-modal__content" {{ stimulus_action('share', 'stopPropagation', 'click') }}>
+            <button class="share-modal__close"
+                    {{ stimulus_action('share', 'closePreview') }}
+                    aria-label="Zoumaachen">
+                ✕
+            </button>
+
+            <h3 class="share-modal__title">Deel dëse Witz! 🐶</h3>
+
+            <div class="share-modal__preview">
+                <img {{ stimulus_target('share', 'previewImage') }} alt="Witz Preview">
+            </div>
+
+            <div class="share-modal__actions">
+                <button class="btn-share-modal btn-share-modal--whatsapp"
+                        {{ stimulus_action('share', 'shareToWhatsApp') }}>
+                    <span class="btn-share-modal__icon">💬</span>
+                    WhatsApp
+                </button>
+
+                <button class="btn-share-modal btn-share-modal--instagram"
+                        {{ stimulus_action('share', 'downloadForInstagram') }}>
+                    <span class="btn-share-modal__icon">📸</span>
+                    Instagram Story
+                </button>
+            </div>
+        </div>
+    </div>
+
     {# --- Footer Links --- #}
     <div class="footer-links">
         <a href="https://github.com/Mukaarts/FoolDog"
