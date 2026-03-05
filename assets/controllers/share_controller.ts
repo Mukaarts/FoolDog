@@ -129,8 +129,11 @@ export default class extends Controller {
             : 'linear-gradient(180deg, #1a1a2e 0%, #16213e 100%)';
 
         // Hannergrond mat Cards
-        const padding = '60px';
-        const cardMaxWidth = aspectRatio ? '720px' : '640px';
+        const padding = aspectRatio ? '80px' : '60px';
+        const cardMaxWidth = aspectRatio ? '800px' : '640px';
+        const emojiSize = aspectRatio ? '72px' : '56px';
+        const textSize = aspectRatio ? '32px' : '26px';
+        const lineHeight = aspectRatio ? '1.8' : '1.7';
 
         tempContainer.innerHTML = `
             <div style="
@@ -168,17 +171,20 @@ export default class extends Controller {
                     background: ${isLightTheme ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.05)'};
                     border: 3px solid ${isLightTheme ? 'rgba(184,134,11,0.4)' : 'rgba(245,200,66,0.3)'};
                     border-radius: 32px;
-                    padding: 60px 50px;
+                    padding: ${padding} 40px;
                     max-width: ${cardMaxWidth};
                     width: 100%;
                     text-align: center;
                     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
                 ">
-                    <div style="font-size: 60px; margin-bottom: 24px;">${this.jokeEmojiValue || '🐾'}</div>
+                    <div style="font-size: ${emojiSize}; margin-bottom: 20px; line-height: 1;">${this.jokeEmojiValue || '🐾'}</div>
                     <div style="
-                        font-size: 28px;
-                        line-height: 1.6;
+                        font-size: ${textSize};
+                        line-height: ${lineHeight};
                         color: ${isLightTheme ? '#1a1a2e' : '#ffffff'};
+                        max-width: 100%;
                     ">${this._escapeHtml(this.jokeTextValue)}</div>
                 </div>
 
