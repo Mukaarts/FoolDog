@@ -32,7 +32,7 @@ export default class extends Controller {
         // Überpréifen ob e Witz ugewisen ass
         const jokeText = this.jokeTextValue;
         if (!jokeText || jokeText.trim() === '') {
-            this._showToast('Weis fir d'" éischt de Witz un!', 'error');
+            this._showToast('Weis fir d'éischt de Witz un!', 'error');
             return;
         }
 
