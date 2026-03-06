@@ -29,8 +29,11 @@ export default class extends Controller {
 
         if (this.isGenerating) return;
 
-        // Überpréifen ob e Witz ugewisen ass
-        const jokeText = this.jokeTextValue;
+        // Aktuell Witz-Daten aus dem DOM huelen
+        const jokeText = this._getCurrentJokeText();
+        const jokeEmoji = this._getCurrentJokeEmoji();
+
+        // Iwwerpréiwen ob e Witz ugewise ass
         if (!jokeText || jokeText.trim() === '') {
             this._showToast(`Weis fir d'éischt de Witz un!`, 'error');
             return;
@@ -40,10 +43,10 @@ export default class extends Controller {
         this._showLoadingState();
 
         try {
-            const dataUrl = await this._generateImage();
+            const dataUrl = await this._generateImage(jokeText, jokeEmoji);
             this._showPreview(dataUrl);
         } catch (error) {
-            console.error('Bildgeneratiounfeel:', error);
+            console.error('Bildgeneratiounsfehl:', error);
             this._showToast('Konnt Bild net generéieren. Probéier erëm!', 'error');
         } finally {
             this.isGenerating = false;
@@ -52,19 +55,22 @@ export default class extends Controller {
     }
 
     /**
-     * Deeelt den Witz via WhatsApp (Web Share API oder Fallback)
+     * Deealt den Witz via WhatsApp (Web Share API oder Fallback)
      */
     async shareToWhatsApp(): Promise<void> {
         try {
-            const dataUrl = await this._generateImage();
+            const jokeText = this._getCurrentJokeText();
+            const jokeEmoji = this._getCurrentJokeEmoji();
+            
+            const dataUrl = await this._generateImage(jokeText, jokeEmoji);
             const blob = await this._dataUrlToBlob(dataUrl);
             const file = new File([blob], 'fooldog-witz.png', { type: 'image/png' });
 
-            // Web Share API (funktionnéiert op mobilen Apparaten)
+            // Web Share API (funktionéiert op mobilen Apparaten)
             if (navigator.share && navigator.canShare?.({ files: [file] })) {
                 await navigator.share({
                     title: 'FoolDog - Lëtzebuergesche Witz',
-                    text: this._getShareText(),
+                    text: this._getShareText(jokeText, jokeEmoji),
                     files: [file]
                 });
                 this._closePreview();
@@ -75,19 +81,19 @@ export default class extends Controller {
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
             if (isMobile) {
-                // iOS/Android: Web Share API sollt funktionnéieren
+                // iOS/Android: Web Share API sollt funktionéieren
                 this._downloadImage(dataUrl, 'fooldog-whatsapp.png');
                 this._showToast('Bild erofgelueden. Deel et op WhatsApp!', 'success');
             } else {
                 // Desktop: WhatsApp Web Link
-                const shareUrl = `https://web.whatsapp.com/send?text=${encodeURIComponent(this._getShareText() + '\n\nhttps://fooldog.lu')}`;
+                const shareUrl = `https://web.whatsapp.com/send?text=${encodeURIComponent(this._getShareText(jokeText, jokeEmoji) + '\n\nhttps://fooldog.lu')}`;
                 this._downloadImage(dataUrl, 'fooldog-whatsapp.png');
                 window.open(shareUrl, '_blank', 'noopener,noreferrer');
             }
 
             this._closePreview();
         } catch (error) {
-            console.error('WhatsApp Share Feel:', error);
+            console.error('WhatsApp Share Fehl:', error);
             this._showToast('Konnt net deelen. Probéier erëm!', 'error');
         }
     }
@@ -97,22 +103,52 @@ export default class extends Controller {
      */
     async downloadForInstagram(): Promise<void> {
         try {
-            const dataUrl = await this._generateImage(9 / 16);
+            const jokeText = this._getCurrentJokeText();
+            const jokeEmoji = this._getCurrentJokeEmoji();
+            
+            const dataUrl = await this._generateImage(jokeText, jokeEmoji, 9 / 16);
             const timestamp = new Date().getTime();
             this._downloadImage(dataUrl, `fooldog-story-${timestamp}.png`);
             this._showToast('Bild fir Instagram Story bereet! 📸', 'success');
             this._closePreview();
         } catch (error) {
-            console.error('Instagram Download Feel:', error);
+            console.error('Instagram Download Fehl:', error);
             this._showToast('Konnt Bild net eroflueden. Probéier erëm!', 'error');
         }
     }
 
     /**
+     * Huet de aktuell Witz-Text aus dem DOM
+     */
+    private _getCurrentJokeText(): string {
+        // Sich no dem visible joke text an der card
+        const textElement = this.cardTarget.querySelector('.joke-text') as HTMLElement;
+        if (textElement && textElement.style.display !== 'none' && textElement.textContent) {
+            return textElement.textContent.trim();
+        }
+        
+        // Fallback: Stimulus Value
+        return this.jokeTextValue || '';
+    }
+
+    /**
+     * Huet de aktuell Witz-Emoji aus dem DOM
+     */
+    private _getCurrentJokeEmoji(): string {
+        // Sich no dem joke-emoji an der card
+        const emojiElement = this.cardTarget.querySelector('.joke-emoji') as HTMLElement;
+        if (emojiElement && emojiElement.textContent) {
+            return emojiElement.textContent.trim();
+        }
+        
+        // Fallback: Stimulus Value
+        return this.jokeEmojiValue || '🐾';
+    }
+
+    /**
      * Generéiert d'Bild aus der Joke-Card
      */
-    private async _generateImage(aspectRatio?: number): Promise<string> {
-        const card = this.cardTarget;
+    private async _generateImage(jokeText: string, jokeEmoji: string, aspectRatio?: number): Promise<string> {
         const isLightTheme = document.documentElement.getAttribute('data-theme') === 'light';
 
         // Temporäre Container fir d'Bildgeneratioun
@@ -179,13 +215,13 @@ export default class extends Controller {
                     word-wrap: break-word;
                     overflow-wrap: break-word;
                 ">
-                    <div style="font-size: ${emojiSize}; margin-bottom: 20px; line-height: 1;">${this.jokeEmojiValue || '🐾'}</div>
+                    <div style="font-size: ${emojiSize}; margin-bottom: 20px; line-height: 1;">${jokeEmoji || '🐾'}</div>
                     <div style="
                         font-size: ${textSize};
                         line-height: ${lineHeight};
                         color: ${isLightTheme ? '#1a1a2e' : '#ffffff'};
                         max-width: 100%;
-                    ">${this._escapeHtml(this.jokeTextValue)}</div>
+                    ">${this._escapeHtml(jokeText)}</div>
                 </div>
 
                 <!-- Footer -->
@@ -278,9 +314,9 @@ export default class extends Controller {
     /**
      * Gëtt de Share Text zeréck
      */
-    private _getShareText(): string {
-        const emoji = this.jokeEmojiValue || '🐶';
-        return `${emoji} ${this.jokeTextValue}\n\n🐾 Deel mat FoolDog!`;
+    private _getShareText(jokeText: string, jokeEmoji: string): string {
+        const emoji = jokeEmoji || '🐶';
+        return `${emoji} ${jokeText}\n\n🐾 Deel mat FoolDog!`;
     }
 
     /**
