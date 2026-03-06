@@ -2,13 +2,12 @@ import { Controller } from '@hotwired/stimulus';
 import * as htmlToImage from 'html-to-image';
 
 export default class extends Controller {
-    static targets = ['card', 'previewModal', 'previewImage', 'shareCanvas'];
+    static targets = ['previewModal', 'previewImage', 'shareCanvas'];
     static values = {
         jokeText: String,
         jokeEmoji: String
     };
 
-    declare readonly cardTarget: HTMLElement;
     declare readonly previewModalTarget: HTMLElement;
     declare readonly previewImageTarget: HTMLImageElement;
     declare readonly shareCanvasTarget: HTMLElement;
@@ -121,8 +120,12 @@ export default class extends Controller {
      * Huet de aktuell Witz-Text aus dem DOM
      */
     private _getCurrentJokeText(): string {
+        // Sich no der joke-card (ausserhalb vum share controller)
+        const card = document.querySelector('.joke-card');
+        if (!card) return this.jokeTextValue || '';
+        
         // Sich no dem visible joke text an der card
-        const textElement = this.cardTarget.querySelector('.joke-text') as HTMLElement;
+        const textElement = card.querySelector('.joke-text') as HTMLElement;
         if (textElement && textElement.style.display !== 'none' && textElement.textContent) {
             return textElement.textContent.trim();
         }
@@ -135,8 +138,12 @@ export default class extends Controller {
      * Huet de aktuell Witz-Emoji aus dem DOM
      */
     private _getCurrentJokeEmoji(): string {
+        // Sich no der joke-card (ausserhalb vum share controller)
+        const card = document.querySelector('.joke-card');
+        if (!card) return this.jokeEmojiValue || '🐾';
+        
         // Sich no dem joke-emoji an der card
-        const emojiElement = this.cardTarget.querySelector('.joke-emoji') as HTMLElement;
+        const emojiElement = card.querySelector('.joke-emoji') as HTMLElement;
         if (emojiElement && emojiElement.textContent) {
             return emojiElement.textContent.trim();
         }
