@@ -265,8 +265,11 @@ export default class extends Controller {
      * Weist d'Bild-Virschau am Modal un
      */
     private _showPreview(dataUrl: string): void {
-        this.previewImageTarget.src = dataUrl;
-        this.previewModalTarget.classList.add('share-modal--visible');
+        const previewImage = document.querySelector('[data-share-target="previewImage"]') as HTMLImageElement;
+        const previewModal = document.querySelector('[data-share-target="previewModal"]') as HTMLElement;
+        
+        if (previewImage) previewImage.src = dataUrl;
+        if (previewModal) previewModal.classList.add('share-modal--visible');
         document.body.style.overflow = 'hidden';
     }
 
@@ -278,9 +281,12 @@ export default class extends Controller {
     }
 
     private _closePreview(): void {
-        this.previewModalTarget.classList.remove('share-modal--visible');
+        const previewModal = document.querySelector('[data-share-target="previewModal"]') as HTMLElement;
+        const previewImage = document.querySelector('[data-share-target="previewImage"]') as HTMLImageElement;
+        
+        if (previewModal) previewModal.classList.remove('share-modal--visible');
         document.body.style.overflow = '';
-        this.previewImageTarget.src = '';
+        if (previewImage) previewImage.src = '';
     }
 
     /**
