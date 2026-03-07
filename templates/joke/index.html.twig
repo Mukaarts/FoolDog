@@ -58,6 +58,11 @@
     {# --- Counter --- #}
     <p class="joke-counter" {{ stimulus_target('joke', 'counter') }}>1 / 10</p>
 
+    {# --- Share Button --- #}
+    <button class="btn-share" {{ stimulus_action('joke', 'share') }} title="Dee Witz deelen">
+        📤 Deelen
+    </button>
+
     {# --- Navigation --- #}
     <div class="joke-nav">
         <button class="btn-nav" {{ stimulus_action('joke', 'prev') }}>
@@ -66,6 +71,11 @@
         <button class="btn-nav" {{ stimulus_action('joke', 'next') }}>
             Weider &rarr;
         </button>
+    </div>
+
+    {# --- Toast Notification --- #}
+    <div class="toast" {{ stimulus_target('joke', 'toast') }} hidden>
+        <span class="toast-message" {{ stimulus_target('joke', 'toastMessage') }}></span>
     </div>
 
     {# --- Footer Links --- #}
@@ -89,7 +99,7 @@
     </div>
 
     {# --- Version --- #}
-    <span class="version-label">v0.5.0</span>
+    <span class="version-label">v0.6.0</span>
 
 </div>
 {% endblock %}

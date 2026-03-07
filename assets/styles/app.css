@@ -363,6 +363,86 @@ html.no-transition *::after {
     transform: translateY(0);
 }
 
+/* --- Share Button --- */
+
+.btn-share {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(74, 222, 128, 0.15);
+    border: 2px solid rgba(74, 222, 128, 0.4);
+    border-radius: 50px;
+    color: var(--color-success);
+    padding: 10px 24px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: all var(--transition-fast);
+    font-family: inherit;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    margin-bottom: 12px;
+}
+
+.btn-share:hover {
+    background: rgba(74, 222, 128, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(74, 222, 128, 0.2);
+}
+
+.btn-share:active {
+    transform: translateY(0);
+}
+
+[data-theme="light"] .btn-share {
+    background: rgba(22, 163, 74, 0.1);
+    border-color: rgba(22, 163, 74, 0.3);
+}
+
+[data-theme="light"] .btn-share:hover {
+    background: rgba(22, 163, 74, 0.2);
+}
+
+/* --- Toast Notification --- */
+
+.toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background: rgba(74, 222, 128, 0.9);
+    color: #0f172a;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    animation: toastSlideUp 0.3s ease forwards;
+}
+
+.toast--error {
+    background: rgba(248, 113, 113, 0.9);
+    color: #fff;
+}
+
+@keyframes toastSlideUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.toast[hidden] {
+    display: none;
+}
+
 /* --- Version Label --- */
 
 .version-label {

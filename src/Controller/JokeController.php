@@ -129,4 +129,36 @@ class JokeController extends AbstractController
 
         return $this->json($data);
     }
-}
+
+    #[Route('/api/joke/{id}', name: 'api_joke_show', methods: ['GET'])]
+    public function showJoke(int $id, JokeRepository $jokeRepository): JsonResponse
+    {
+        $joke = $jokeRepository->find($id);
+
+        if (!$joke) {
+            return $this->json(['error' => 'Witz net fonnt'], Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->json([
+            'id' => $joke->getId(),
+            'content' => $joke->getContent(),
+            'emoji' => $joke->getEmoji(),
+            'author' => $joke->getAuthor(),
+        ]);
+    }
+
+    #[Route('/joke/{id}', name: 'app_joke_show', methods: ['GET'])]
+    public function showJokePage(int $id, JokeRepository $jokeRepository): Response
+    {
+        $joke = $jokeRepository->find($id);
+
+        if (!$joke) {
+            throw $this->createNotFoundException('Witz net fonnt');
+        }
+
+        return $this->render('joke/index.html.twig', [
+            'joke' => $joke->getContent(),
+            'selectedJokeId' => $joke->getId(),
+        ]);
+    }
+
